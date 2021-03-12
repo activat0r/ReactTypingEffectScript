@@ -1,0 +1,28 @@
+@keyframes blinker{
+    0%{
+        opacity: 1;
+    }
+    50%{
+        opacity: 0;
+    }
+    100%{
+        opacity: 1;
+    }
+}
+
+#about_name::after{
+    content: " |";
+    color: white;
+    animation:blinker infinite;
+    animation-duration: 1s;
+}
+
+.white-text{
+    text-decoration: white;
+}
+
+.center{
+    position: absolute;
+    top: 40%;
+    margin-left: 50px;
+}
