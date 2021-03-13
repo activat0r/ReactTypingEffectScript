@@ -3,17 +3,10 @@ import react from 'react'
 import {useState, useEffect} from 'react'
 import './NameTransition.css'
 
-var word ="";
-var keywordCounter = 0;
-var charCounter = 0;
-var deleting = false;
-const eraseCharDelay= 150;
-const typeCharDelay = 400;
-const newKeywordDelay = 1000;
-const keywords = ["Aditya Sawant","a Developer", "an Engineer"];
-
 function About(){
     const [text, setText] = useState("");   
+    const [deleting,setDeleting] = useState(false);
+
     useEffect(()=>{
         const timer = setTimeout(()=>{
 
@@ -21,31 +14,37 @@ function About(){
             word = (word + keywords[keywordCounter].charAt(charCounter));
             setText(word)
             charCounter++;
-            if(charCounter == keywords[keywordCounter].length){
-                deleting = true;
-            }
+            
         }
         
     },typeCharDelay)
     return () => window.clearTimeout(timer);
 
-    })
+    },[deleting,charCounter,word])
 
     useEffect(()=>{
         const timer2 = setTimeout(()=>{
-
        if(charCounter>0 && deleting){
             word = (keywords[keywordCounter].substr(0,charCounter-1));
             setText(word)
             charCounter--;
             if(charCounter == 0){
-                deleting = false;
-                keywordCounter = 1 - keywordCounter
+                setDeleting(false)
+                keywordCounter = 1-keywordCounter
             }
         }
     },eraseCharDelay)
     return () => window.clearTimeout(timer2);
+    },[deleting,charCounter,word])
 
+    useEffect(()=>{
+        const timer3 = setTimeout(()=>{
+            if(charCounter == keywords[keywordCounter].length){
+                setDeleting(true);
+            }
+           
+        },newKeywordDelay)
+        return ()=> window.clearTimeout(timer3);
     })
 
     return(
@@ -64,4 +63,3 @@ function About(){
     );
 }
 export default About;
-
